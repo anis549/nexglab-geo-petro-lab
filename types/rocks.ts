@@ -34,7 +34,7 @@ export type Fracture =
   | "irregular" // irrégulière
   | "splintery" // esquilleuse
 
-export interface RockSample {
+export interface RockProperties {
   id: string
   name: string
   type: RockType
@@ -46,6 +46,9 @@ export interface RockSample {
   acidReaction: AcidReaction
   fracture: Fracture
   hasFossils: boolean
+}
+
+export interface RockSample extends RockProperties {
   modelPath: string
   thumbnailPath: string
 }
@@ -65,3 +68,4 @@ export interface ExperimentResult {
   result: string
   details: Record<string, any>
 }
+
