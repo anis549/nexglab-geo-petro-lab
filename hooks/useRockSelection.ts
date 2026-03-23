@@ -1,7 +1,7 @@
 "use client"
 
 import { useCallback } from "react"
-import { useLabStore } from "@/store/lab-store"
+import { useLabStore } from "@/store/useLabStore"
 import type { RockSample } from "@/types/rocks"
 
 export function useRockSelection() {

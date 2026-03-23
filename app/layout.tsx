@@ -23,7 +23,7 @@ export default function RootLayout({
           content="Laboratoire virtuel interactif dédié à la pétrographie des roches sédimentaires et des sols déconsolidés"
         />
       </head>
-      <body>
+      <body className="bg-background">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           {children}
         </ThemeProvider>

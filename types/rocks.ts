@@ -3,6 +3,7 @@ export type RockType =
   | "limestone" // calcaire
   | "clay" // argile
   | "silt" // silt
+  | "siltstone" // siltstone
   | "conglomerate" // conglomérat
   | "breccia" // brèche
   | "dolomite" // dolomie
@@ -17,6 +18,8 @@ export type GrainSize =
   | "sand" // sable
   | "silt" // silt
   | "clay" // argile
+  | "medium" // moyen
+  | "fine" // fin
 
 export type AcidReaction =
   | "strong" // forte
@@ -26,6 +29,7 @@ export type AcidReaction =
 export type Texture =
   | "rough" // rugueuse
   | "smooth" // lisse
+  | "crystalline" // cristalline
 
 export type Hardness = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 // Échelle de Mohs
 
@@ -49,8 +53,10 @@ export interface RockProperties {
 }
 
 export interface RockSample extends RockProperties {
-  modelPath: string
+  model3D: string
+  image: string
   thumbnailPath: string
+  icon: string
 }
 
 export type ExperimentType =

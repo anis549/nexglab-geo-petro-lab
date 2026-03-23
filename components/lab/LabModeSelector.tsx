@@ -4,7 +4,7 @@ import { memo } from "react"
 import { Button } from "@/components/ui/button"
 import { Eye, Microscope, BarChart3 } from "lucide-react"
 import { useLabMode } from "@/hooks/useLabMode"
-import type { LabMode } from "@/store/lab-store"
+import type { LabMode } from "@/store/useLabStore"
 
 const modeConfig = {
   observation: {
@@ -32,7 +32,7 @@ export const LabModeSelector = memo(function LabModeSelector({ className }: LabM
   const { labMode, switchMode } = useLabMode()
 
   return (
-    <div className={`flex gap-2 ${className}`}>
+    <div className={`flex gap-1 p-1 bg-muted/50 rounded-lg border border-border/50 ${className}`}>
       {(Object.keys(modeConfig) as LabMode[]).map((mode) => {
         const config = modeConfig[mode]
         const Icon = config.icon
@@ -41,13 +41,13 @@ export const LabModeSelector = memo(function LabModeSelector({ className }: LabM
         return (
           <Button
             key={mode}
-            variant={isActive ? "default" : "outline"}
+            variant="ghost"
             size="sm"
             onClick={() => switchMode(mode)}
-            className={`flex items-center gap-2 transition-all ${
+            className={`flex items-center gap-2 px-3 py-2 text-xs font-medium transition-all duration-200 rounded-md ${
               isActive
-                ? "bg-primary text-primary-foreground shadow-sm"
-                : "hover:bg-secondary/80"
+                ? "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90"
+                : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
             }`}
           >
             <Icon className="h-4 w-4" />

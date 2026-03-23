@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react"
-import { useLabStore } from "@/store/labStore"
+import { useLabStore } from "@/store/lab-store"
 import type { RockSample } from "@/types/rocks"
 
 export function useRockSelection() {

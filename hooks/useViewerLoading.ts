@@ -1,10 +1,10 @@
 "use client"
 
 import { useCallback } from "react"
-import { useLabStore } from "@/store/lab-store"
+import { useViewerStore } from "@/store/useViewerStore"
 
 export function useViewerLoading() {
-  const { isViewerLoading, setViewerLoading } = useLabStore()
+  const { isViewerLoading, setViewerLoading } = useViewerStore()
 
   const startLoading = useCallback(() => {
     setViewerLoading(true)

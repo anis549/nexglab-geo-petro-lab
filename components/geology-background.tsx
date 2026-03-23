@@ -1,10 +1,21 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
+
+interface MineralDot {
+  width: string
+  height: string
+  top: string
+  left: string
+  background: string
+  duration: number
+  delay: number
+}
 
 export default function GeologyBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [mineralDots, setMineralDots] = useState<MineralDot[]>([])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -106,6 +117,20 @@ export default function GeologyBackground() {
     return () => {
       window.removeEventListener("resize", resizeCanvas)
     }
+  }, [])
+
+  // Generate mineral dots data only on client side to prevent hydration mismatch
+  useEffect(() => {
+    const dots = Array.from({ length: 30 }).map(() => ({
+      width: `${Math.random() * 4 + 2}px`,
+      height: `${Math.random() * 4 + 2}px`,
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`,
+      background: `rgba(139, 94, 60, ${Math.random() * 0.15 + 0.05})`,
+      duration: Math.random() * 5 + 3,
+      delay: Math.random() * 2,
+    }))
+    setMineralDots(dots)
   }, [])
 
   return (
@@ -367,26 +392,26 @@ export default function GeologyBackground() {
 
       {/* Additional decorative mineral dots */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
-        {Array.from({ length: 30 }).map((_, i) => (
+        {mineralDots.map((dot, i) => (
           <motion.div
             key={`mineral-dot-${i}`}
             className="absolute rounded-full"
             style={{
-              width: `${Math.random() * 4 + 2}px`,
-              height: `${Math.random() * 4 + 2}px`,
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              background: `rgba(139, 94, 60, ${Math.random() * 0.15 + 0.05})`,
+              width: dot.width,
+              height: dot.height,
+              top: dot.top,
+              left: dot.left,
+              background: dot.background,
             }}
             animate={{
               opacity: [0.3, 0.8, 0.3],
               scale: [1, 1.3, 1],
             }}
             transition={{
-              duration: Math.random() * 5 + 3,
+              duration: dot.duration,
               repeat: Number.POSITIVE_INFINITY,
               ease: "easeInOut",
-              delay: Math.random() * 2,
+              delay: dot.delay,
             }}
           />
         ))}

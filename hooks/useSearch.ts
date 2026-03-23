@@ -1,18 +1,14 @@
 "use client"
 
 import { useCallback, useMemo } from "react"
-import { useLabStore } from "@/store/lab-store"
+import { useSearchStore } from "@/store/useSearchStore"
 import type { RockSample } from "@/types/rocks"
 
 export function useSearch(rockSamples: RockSample[]) {
-  const { searchQuery, setSearchQuery } = useLabStore()
+  const { searchQuery, setSearchQuery, clearSearch } = useSearchStore()
 
   const updateSearch = useCallback((query: string) => {
     setSearchQuery(query)
-  }, [setSearchQuery])
-
-  const clearSearch = useCallback(() => {
-    setSearchQuery("")
   }, [setSearchQuery])
 
   const filteredRocks = useMemo(() => {

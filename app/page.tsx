@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import Laboratory from "@/components/laboratory"
+import Laboratory from "@/components/lab/Laboratory"
 import IntroPage from "@/components/intro-page"
 import GeologyBackground from "@/components/geology-background"
 

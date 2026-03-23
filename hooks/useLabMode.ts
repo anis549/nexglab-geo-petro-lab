@@ -1,8 +1,8 @@
 "use client"
 
 import { useCallback } from "react"
-import { useLabStore } from "@/store/lab-store"
-import type { LabMode } from "@/store/lab-store"
+import { useLabStore } from "@/store/useLabStore"
+import type { LabMode } from "@/store/useLabStore"
 
 export function useLabMode() {
   const { labMode, setLabMode } = useLabStore()

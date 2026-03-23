@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss"
+import tailwindcssAnimate from "tailwindcss-animate"
 
 const config = {
   darkMode: ["class"],
@@ -23,49 +24,51 @@ const config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "#f4f1ea", // Beige roche
-        foreground: "#2e2e2e", // Noir basaltes
+        background: "#f6f8fb", // Clean scientific background
+        foreground: "#1a1a1a", // Dark text for contrast
         primary: {
-          DEFAULT: "#a94442", // Rouge ferrugineux
-          foreground: "#f4f1ea", // Beige roche
+          DEFAULT: "#0b3d91", // Professional blue
+          foreground: "#ffffff",
         },
         secondary: {
-          DEFAULT: "#d6d3ce", // Gris clair stratifié
-          foreground: "#2e2e2e", // Noir basaltes
+          DEFAULT: "#e2e8f0", // Light gray
+          foreground: "#1a1a1a",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "#d6d3ce", // Gris clair stratifié
-          foreground: "#2e2e2e", // Noir basaltes
+          DEFAULT: "#f1f5f9", // Soft muted background
+          foreground: "#64748b", // Muted text
         },
         accent: {
-          DEFAULT: "#f1e7c8", // Sable doux / jaune pâle
-          foreground: "#2e2e2e", // Noir basaltes
-        },
-        popover: {
-          DEFAULT: "#f4f1ea", // Beige roche
-          foreground: "#2e2e2e", // Noir basaltes
+          DEFAULT: "#2fa4ff", // Bright accent blue
+          foreground: "#ffffff",
         },
         card: {
-          DEFAULT: "#f4f1ea", // Beige roche
-          foreground: "#2e2e2e", // Noir basaltes
+          DEFAULT: "#ffffff", // Clean white cards
+          foreground: "#1a1a1a",
         },
-        // Couleurs géologiques supplémentaires
-        geology: {
-          strata: "#d4b48c", // Strates rocheuses
-          quartz: "#e5e1df", // Quartz clair
-          iron: "#a13c2f", // Fer oxydé (argile rouge)
-          basalt: "#2e2e2e", // Basalte
-          limestone: "#f5f5f2", // Calcaire
+        highlight: "#f4c24b", // Warm highlight color
         },
+        highlight: "#f4c24b", // Warm highlight yellow
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        xl: "1.5rem",
+        "2xl": "2rem",
+      },
+      boxShadow: {
+        "glow-primary": "var(--glow-primary)",
+        "glow-xl": "0 25px 50px -12px rgba(0, 0, 0, 0.25), var(--glow-primary)",
+        glass: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
+      },
+      animation: {
+        "pulse-glow": "pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "float-in": "float-in 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
       },
       keyframes: {
         "accordion-down": {
@@ -76,14 +79,34 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "pulse-glow": {
+          "0%, 100%": { boxShadow: "var(--glow-primary)" },
+          "50%": { boxShadow: "var(--glow-primary), 0 0 40px rgba(47,164,255,0.6)" },
+        },
+        "float-in": {
+          "0%": { opacity: 0, transform: "translateY(20px) scale(0.95)" },
+          "100%": { opacity: 1, transform: "translateY(0) scale(1)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "pulse-glow": "pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "float-in": "float-in 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
+      },
+      keyframes: {
+        "pulse-glow": {
+          "0%, 100%": { boxShadow: "var(--glow-primary)" },
+          "50%": { boxShadow: "var(--glow-primary), 0 0 40px rgba(47,164,255,0.6)" },
+        },
+        "float-in": {
+          "0%": { opacity: 0, transform: "translateY(20px) scale(0.95)" },
+          "100%": { opacity: 1, transform: "translateY(0) scale(1)" },
+        },
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
-} satisfies Config
+  plugins: [tailwindcssAnimate],
+};
 
 export default config
