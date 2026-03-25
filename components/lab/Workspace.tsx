@@ -1,101 +1,191 @@
 "use client"
 
-import React, { memo, Suspense } from "react"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Ruler, TestTube, Hammer, Search, Bug } from "lucide-react"
-import type { RockSample } from "@/types/rocks"
-import { WorkspaceEmptyState } from "./workspace-empty-state"
-import { LabModeSelector } from "./LabModeSelector"
+import React, { memo } from "react"
 import { Viewer } from "./Viewer"
-import { useLabStore } from "@/store/useLabStore"
-import { useLabMode } from "@/hooks/useLabMode"
+import type { RockSample } from "@/types/rocks"
 
 interface WorkspaceProps {
   selectedRock: RockSample | null
 }
 
 export const Workspace = memo(function Workspace({ selectedRock }: WorkspaceProps) {
-  const { labMode } = useLabMode()
-
   if (!selectedRock) {
     return (
-      <div className="h-full glass rounded-3xl p-12 flex flex-col items-center justify-center backdrop-blur-xl shadow-glow-xl border border-border/20">
-        <Suspense fallback={<div className="animate-pulse">Loading...</div>}>
-          <WorkspaceEmptyState />
-        </Suspense>
+      <div className="h-full flex flex-col items-center justify-center gap-4">
+        {/* Empty state icon */}
+        <div
+          className="w-16 h-16 rounded-2xl flex items-center justify-center"
+          style={{
+            background: "rgba(0,80,200,0.1)",
+            border: "1px solid rgba(0,180,255,0.12)",
+          }}
+        >
+          <span className="text-2xl opacity-50">🪨</span>
+        </div>
+        <p
+          className="text-sm"
+          style={{
+            color: "rgba(120,170,220,0.45)",
+            fontFamily: "'Sora', sans-serif",
+          }}
+        >
+          Sélectionnez une roche
+        </p>
       </div>
     )
   }
 
   return (
-    <div className="h-full grid grid-cols-1 lg:grid-cols-3 gap-6 p-4 lg:p-8 bg-background/50 rounded-3xl shadow-glow-xl">
-      {/* Left Panel - Rock Info */}
-      <div className="lg:col-span-1 space-y-4">
-        <div className="glass p-6 rounded-2xl shadow-md border border-border/40 h-full flex flex-col">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-20 h-20 rounded-xl overflow-hidden ring-2 ring-primary/50 shadow-lg flex-shrink-0">
-              <img src={selectedRock.image} alt={selectedRock.name} className="w-full h-full object-cover" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <h2 className="text-2xl font-bold text-foreground truncate">{selectedRock.name}</h2>
-              <p className="text-sm font-medium text-muted-foreground capitalize">{selectedRock.type}</p>
-            </div>
+    <div className="h-full flex flex-col lg:grid lg:grid-cols-2 gap-0 overflow-auto">
+
+      {/* ── 3D Viewer panel ── */}
+      <div
+        className="relative flex-shrink-0 lg:flex-shrink"
+        style={{ minHeight: "420px" }}
+      >
+        {/* Background glow for the viewer */}
+        <div
+          className="absolute inset-4 rounded-2xl pointer-events-none z-0"
+          style={{
+            background: "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,100,220,0.12) 0%, transparent 70%)",
+            filter: "blur(20px)",
+          }}
+        />
+
+        <div
+          className="absolute inset-4 rounded-2xl overflow-hidden z-10"
+          style={{
+            background: "linear-gradient(145deg, rgba(4,12,30,0.8) 0%, rgba(3,10,24,0.9) 100%)",
+            border: "1px solid rgba(0,180,255,0.1)",
+            boxShadow: "0 0 0 1px rgba(0,150,255,0.05) inset, 0 4px 30px rgba(0,40,120,0.3)",
+          }}
+        >
+          {/* Top viewer label */}
+          <div
+            className="absolute top-3 left-3 z-20 flex items-center gap-2 px-3 py-1.5 rounded-lg"
+            style={{
+              background: "rgba(0,0,0,0.4)",
+              backdropFilter: "blur(10px)",
+              border: "1px solid rgba(255,255,255,0.06)",
+            }}
+          >
+            <div
+              className="w-1.5 h-1.5 rounded-full animate-pulse"
+              style={{ background: "rgba(0,220,255,0.8)" }}
+            />
+            <span
+              className="text-[10px] font-semibold tracking-widest uppercase"
+              style={{ color: "rgba(0,200,255,0.7)", fontFamily: "'DM Mono', monospace" }}
+            >
+              3D Viewer
+            </span>
           </div>
-          <p className="text-sm text-muted-foreground flex-1 leading-relaxed">{selectedRock.description}</p>
-          <div className="flex flex-wrap gap-2 pt-4 mt-auto">
-            <Badge variant="secondary" className="text-xs">Dureté: {selectedRock.hardness}</Badge>
-            <Badge variant="outline" className="text-xs">{selectedRock.grainSize}</Badge>
-            <Badge variant="default" className="text-xs">{selectedRock.texture}</Badge>
-            {selectedRock.hasFossils && <Badge variant="destructive" className="text-xs">Fossiles</Badge>}
-          </div>
+
+          {/* Corner decorators */}
+          {[
+            { top: 8, left: 8, borderTop: "1px solid", borderLeft: "1px solid" },
+            { top: 8, right: 8, borderTop: "1px solid", borderRight: "1px solid" },
+            { bottom: 8, left: 8, borderBottom: "1px solid", borderLeft: "1px solid" },
+            { bottom: 8, right: 8, borderBottom: "1px solid", borderRight: "1px solid" },
+          ].map((style, i) => (
+            <div
+              key={i}
+              className="absolute w-4 h-4 pointer-events-none z-20"
+              style={{ ...style, borderColor: "rgba(0,200,255,0.3)" }}
+            />
+          ))}
+
+          <Viewer modelPath={selectedRock.model3D} className="w-full h-full" />
         </div>
       </div>
 
-      {/* Center - 3D Viewer */}
-      <div className="lg:col-span-1 lg:col-start-2 row-span-full">
-        <div className="sticky top-4 space-y-4">
-          <LabModeSelector />
-          <div className="glass rounded-2xl p-2 border border-border/50 shadow-lg">
-            <Viewer modelPath={selectedRock.model3D} />
-          </div>
-        </div>
-      </div>
+      {/* ── Info panel ── */}
+      <div className="flex flex-col p-6 gap-5 overflow-y-auto">
 
-      {/* Right Panel - Tools */}
-      <div className="lg:col-span-1 space-y-4">
-        <div className="glass p-6 rounded-2xl border border-border/40 shadow-md">
-          <h3 className="text-lg font-semibold text-foreground mb-6">Outils Scientifiques</h3>
-          <div className="space-y-3">
-            {[
-              { Icon: Ruler, label: 'Granulométrie', desc: 'Analyse grains', type: 'granulometry' },
-              { Icon: TestTube, label: 'Test HCl', desc: 'Réaction acide', type: 'acid' },
-              { Icon: Hammer, label: 'Dureté', desc: 'Échelle Mohs', type: 'hardness' },
-              { Icon: Search, label: 'Texture', desc: 'Surface', type: 'texture' },
-              { Icon: Bug, label: 'Fossiles', desc: 'Détection', type: 'fossil' },
-            ].map(({ Icon, label, desc, type }) => (
-              <Button 
-                key={type} 
-                variant="ghost" 
-                className="w-full justify-start gap-4 p-4 rounded-xl hover:bg-muted/50 hover:shadow-md transition-all group bg-card/70 border border-border/30"
-                onClick={() => console.log(`${label} sur ${selectedRock.name}`)}
+        {/* Rock name header */}
+        <div
+          className="p-5 rounded-xl"
+          style={{
+            background: "linear-gradient(145deg, rgba(0,60,160,0.2) 0%, rgba(0,100,200,0.1) 100%)",
+            border: "1px solid rgba(0,180,255,0.12)",
+            boxShadow: "0 0 20px rgba(0,100,200,0.08) inset",
+          }}
+        >
+          <div className="flex items-start gap-3">
+            <div
+              className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+              style={{
+                background: "rgba(0,160,255,0.15)",
+                border: "1px solid rgba(0,200,255,0.2)",
+              }}
+            >
+              <span className="text-base">🪨</span>
+            </div>
+            <div>
+              <p
+                className="text-[10px] font-semibold tracking-[0.2em] uppercase mb-1"
+                style={{ color: "rgba(0,200,255,0.55)", fontFamily: "'DM Mono', monospace" }}
               >
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
-                  <Icon className="w-6 h-6 text-primary group-hover:scale-110 transition-transform" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-semibold text-foreground">{label}</span>
-                  <span className="text-xs text-muted-foreground">{desc}</span>
-                </div>
-              </Button>
-            ))}
+                Specimen
+              </p>
+              <h2
+                className="text-xl font-black leading-tight"
+                style={{
+                  background: "linear-gradient(135deg, #ffffff 0%, rgba(180,225,255,0.9) 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  fontFamily: "'Sora', sans-serif",
+                }}
+              >
+                {selectedRock.name}
+              </h2>
+            </div>
           </div>
+        </div>
+
+        {/* Description */}
+        <div
+          className="p-5 rounded-xl flex-1"
+          style={{
+            background: "rgba(255,255,255,0.02)",
+            border: "1px solid rgba(255,255,255,0.05)",
+          }}
+        >
+          <p
+            className="text-xs font-semibold tracking-[0.15em] uppercase mb-3"
+            style={{ color: "rgba(100,160,210,0.5)", fontFamily: "'DM Mono', monospace" }}
+          >
+            Description
+          </p>
+          <p
+            className="text-sm leading-relaxed"
+            style={{
+              color: "rgba(160,200,240,0.65)",
+              fontFamily: "'Sora', sans-serif",
+            }}
+          >
+            {selectedRock.description}
+          </p>
+        </div>
+
+        {/* Viewer hint */}
+        <div
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl"
+          style={{
+            background: "rgba(0,150,255,0.05)",
+            border: "1px solid rgba(0,180,255,0.08)",
+          }}
+        >
+          <span className="text-xs" style={{ color: "rgba(0,180,255,0.4)" }}>↻</span>
+          <p
+            className="text-[10px] tracking-wide"
+            style={{ color: "rgba(100,160,210,0.4)", fontFamily: "'DM Mono', monospace" }}
+          >
+            Faites glisser pour faire pivoter · Scroll pour zoomer
+          </p>
         </div>
       </div>
     </div>
   )
 })
-
-Workspace.displayName = 'Workspace'
-

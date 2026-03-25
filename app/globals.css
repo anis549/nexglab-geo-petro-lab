@@ -5,212 +5,361 @@
 
 @layer base {
   :root {
-    --background: oklch(18% 0.02 260); /* Soft dark blue-gray hybrid */
-    --glass-bg: rgba(15, 23, 42, 0.85); /* Dark glass base */
-    --glow-primary: 0 0 0 1px hsl(var(--primary)), 0 0 20px rgba(47,164,255,0.4); /* Electric glow */
-    --foreground: #10264b;
-    --card: #ffffff;
-    --card-foreground: #10264b;
-    --popover: #ffffff;
-    --popover-foreground: #10264b;
-    --primary: #0b3d91;
+    /* ===== COLORS SYSTEM (GLASS DARK UI) ===== */
+    --background: oklch(12% 0.03 250);
+    --glass-bg: rgba(15, 23, 42, 0.75);
+
+    --foreground: oklch(0.98 0 0); /* ✅ أبيض واضح */
+    --card: rgba(20, 30, 50, 0.6);
+   --muted-foreground: 51 65 85;
+
+    --popover: rgba(20, 30, 50, 0.85);
+    --popover-foreground: oklch(0.98 0 0);
+
+    --primary: #2fa4ff;
     --primary-foreground: #ffffff;
-    --secondary: #2fa4ff;
-    --secondary-foreground: #ffffff;
-    --muted: #dbe9fb;
-    --muted-foreground: #91a7c9;
+
+    --secondary: rgba(255, 255, 255, 0.08);
+    --secondary-foreground: oklch(0.95 0 0);
+
+    --muted: rgba(255, 255, 255, 0.05);
+   --muted-foreground: 51 65 85;
+
     --accent: #2fa4ff;
-    --accent-foreground: #0b3d91;
+    --accent-foreground: #ffffff;
+
     --destructive: #dc2626;
     --destructive-foreground: #ffffff;
-    --border: #c7d5f1;
-    --input: #ffffff;
+
+    --border: rgba(255, 255, 255, 0.12);
+    --input: rgba(255, 255, 255, 0.08);
     --ring: #2fa4ff;
+
     --radius: 0.75rem;
+
+    /* Glow */
+    --glow-primary:
+      0 0 0 1px rgba(47,164,255,0.4),
+      0 0 25px rgba(47,164,255,0.35);
   }
 
   .dark {
-    --background: oklch(12% 0.03 250); /* Deeper scientific dark */
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.145 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.145 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.985 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.396 0.141 25.723);
-    --destructive-foreground: oklch(0.637 0.237 25.331);
-    --border: oklch(0.269 0 0);
-    --input: oklch(0.269 0 0);
-    --ring: oklch(0.439 0 0);
-  }
+  --card: 15 23 42;
+  --card-foreground: 248 250 252;
+
+  --muted-foreground: 148 163 184;
+}
 
   * {
-    border-color: hsl(var(--border));
+    border-color: var(--border);
   }
 
   body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
-    font-family: "Inter", "Roboto", "Helvetica Neue", Arial, sans-serif;
+    background: var(--background);
+    color: var(--foreground);
+
+    font-family: "Inter", "SF Pro Display", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ===== TYPOGRAPHY SYSTEM ===== */
+
+  h1, h2, h3, h4 {
+    color: white;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  h1 { font-size: 2.2rem; }
+  h2 { font-size: 1.8rem; }
+  h3 { font-size: 1.4rem; }
+
+  p {
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.6;
+  }
+
+  .text-muted-foreground {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  .text-sm {
+    color: rgba(255, 255, 255, 0.7) !important;
   }
 }
 
+/* ===== GLASS SYSTEM ===== */
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-
-  /* Blackbox Glassmorphism */
   .glass {
-    background: hsl(var(--glass-bg));
-    backdrop-filter: blur(24px) saturate(180%);
+    background: var(--glass-bg);
+    backdrop-filter: blur(30px) saturate(180%);
+    border: 1px solid var(--border);
     box-shadow: var(--glow-primary);
-    border: 1px solid hsl(var(--primary)/0.2);
   }
 
-  /* Enhanced Glow */
+  .glass-soft {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+  }
+
   .glow-hover:hover {
-    box-shadow: var(--glow-primary), 0 8px 32px hsl(var(--primary)/0.3) !important;
+    box-shadow:
+      var(--glow-primary),
+      0 10px 40px rgba(47,164,255,0.4);
   }
 
-  /* Floating Effect */
   .float-glass {
-    transform: translateY(0);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s ease;
   }
+
   .float-glass:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px) scale(1.02);
   }
 }
 
-/* Styles personnalisés pour l'application de pétrographie */
-.geology-pattern-strata {
-  background-image: linear-gradient(to bottom, rgba(212, 180, 140, 0.2) 1px, transparent 1px);
-  background-size: 100% 10px;
+/* ===== FIX TEXT IN ALL UI ===== */
+
+/* Tabs */
+[data-state="active"] {
+  color: white !important;
 }
 
-.geology-pattern-dots {
-  background-image: radial-gradient(rgba(46, 46, 46, 0.1) 1px, transparent 1px);
-  background-size: 10px 10px;
+/* Buttons */
+button {
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
-/* Animation de transition pour la page d'intro */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+/* Cards */
+[class*="card"] {
+  color: white;
 }
 
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
+/* Alerts */
+.alert {
+  color: white;
 }
 
-.intro-fade-in {
-  animation: fadeIn 0.8s ease-in-out forwards;
-}
-
-.intro-fade-out {
-  animation: fadeOut 0.5s ease-in-out forwards;
-}
-
-/* Effet de strates géologiques */
-.strata-background {
-  position: relative;
-  overflow: hidden;
-}
-
-.strata-background::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(139, 94, 60, 0.05) 0px,
-    rgba(139, 94, 60, 0.1) 1px,
-    transparent 1px,
-    transparent 15px
-  );
-  z-index: 0;
-}
-
-/* Effet de grain minéral */
-.mineral-texture {
-  position: relative;
-}
-
-.mineral-texture::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%238b5e3c' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
-  opacity: 0.5;
-  z-index: 0;
-}
-
-/* Effet de glow pour le bouton */
-.glow-button {
-  position: relative;
-}
-
-.glow-button::before {
-  content: "";
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, #b7410e, #8b5e3c);
-  border-radius: 0.5rem;
-  z-index: -1;
-  filter: blur(10px);
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-}
-
-.glow-button:hover::before {
-  opacity: 0.7;
-}
-
-/* Custom scrollbar styles */
+/* ===== SCROLLBAR ===== */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: hsl(var(--border)) transparent;
+  scrollbar-color: var(--border) transparent;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: hsl(var(--border));
+  background: var(--border);
   border-radius: 3px;
 }
+@import "tailwindcss";
+@import "tw-animate-css";
 
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground));
+@custom-variant dark (&:is(.dark *));
+
+@layer base {
+  :root {
+    /* ===== COLORS SYSTEM (GLASS DARK UI) ===== */
+    --background: oklch(12% 0.03 250);
+    --glass-bg: rgba(15, 23, 42, 0.75);
+
+    --foreground: oklch(0.98 0 0); /* ✅ أبيض واضح */
+    --card: rgba(20, 30, 50, 0.6);
+   --card-foreground: 15 23 42;
+
+    --popover: rgba(20, 30, 50, 0.85);
+    --popover-foreground: oklch(0.98 0 0);
+
+    --primary: #2fa4ff;
+    --primary-foreground: #ffffff;
+
+    --secondary: rgba(255, 255, 255, 0.08);
+    --secondary-foreground: oklch(0.95 0 0);
+
+    --muted: rgba(255, 255, 255, 0.05);
+   --muted-foreground: 51 65 85;
+
+    --accent: #2fa4ff;
+    --accent-foreground: #ffffff;
+
+    --destructive: #dc2626;
+    --destructive-foreground: #ffffff;
+
+    --border: rgba(255, 255, 255, 0.12);
+    --input: rgba(255, 255, 255, 0.08);
+    --ring: #2fa4ff;
+
+    --radius: 0.75rem;
+
+    /* Glow */
+    --glow-primary:
+      0 0 0 1px rgba(47,164,255,0.4),
+      0 0 25px rgba(47,164,255,0.35);
+  }
+
+.dark {
+  --card: 15 23 42;
+ --card-foreground: 248 250 252;
+
+  --muted-foreground: 148 163 184;
+}
+
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+
+    font-family: "Inter", "SF Pro Display", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ===== TYPOGRAPHY SYSTEM ===== */
+
+  h1, h2, h3, h4 {
+    color: white;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  h1 { font-size: 2.2rem; }
+  h2 { font-size: 1.8rem; }
+  h3 { font-size: 1.4rem; }
+
+  p {
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.6;
+  }
+
+  .text-muted-foreground {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  .text-sm {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+}
+
+/* ===== GLASS SYSTEM ===== */
+@layer utilities {
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(30px) saturate(180%);
+    border: 1px solid var(--border);
+    box-shadow: var(--glow-primary);
+  }
+
+  .glass-soft {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+  }
+
+  .glow-hover:hover {
+    box-shadow:
+      var(--glow-primary),
+      0 10px 40px rgba(47,164,255,0.4);
+  }
+
+  .float-glass {
+    transition: all 0.4s ease;
+  }
+
+  .float-glass:hover {
+    transform: translateY(-6px) scale(1.02);
+  }
+}
+/* =========================================
+   GLOBAL TEXT FIX (SMART - NO BREAK)
+   ========================================= */
+
+/* النص الافتراضي */
+body {
+  color: var(--foreground);
+}
+
+/* العناوين تبقى بيضاء */
+h1, h2, h3, h4 {
+  color: white;
+}
+
+/* النصوص العامة */
+p {
+  color: rgba(242, 243, 255, 0.974);
+}
+
+/* muted */
+.text-muted-foreground {
+  color: rgb(255, 255, 255);
+}
+
+/* =========================================
+   ⚠️ FIX FOR LIGHT BACKGROUNDS (IMPORTANT)
+   ========================================= */
+
+
+
+/* =========================================
+   REPORT FIX (ISOLATED)
+   ========================================= */
+
+.report-scope {
+  color: #0b3d91;
+}
+
+.report-scope * {
+  color: #0b3d91;
+}
+
+.report-scope h1,
+.report-scope h2,
+.report-scope h3 {
+  color: #082a66;
+}
+
+/* الجداول */
+.report-scope table,
+.report-scope th,
+.report-scope td {
+  color: #0b3d91;
+}
+
+/* inputs */
+.report-scope input,
+.report-scope textarea {
+  color: #0b3d91;
+}
+/* ===== FIX NOTEBOOK TEXT COLOR ===== */
+
+.notebook-fix {
+  color: #0b3d91 !important;
+}
+
+.notebook-fix * {
+  color: #0b3d91 !important;
+}
+
+.notebook-fix h1,
+.notebook-fix h2,
+.notebook-fix h3 {
+  color: #082a66 !important;
+}
+
+.notebook-fix input,
+.notebook-fix textarea {
+  color: #0b3d91 !important;
+}
+
+.notebook-fix table,
+.notebook-fix th,
+.notebook-fix td {
+  color: #0b3d91 !important;
 }

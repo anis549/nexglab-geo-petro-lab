@@ -10,7 +10,7 @@ import type { RockSample, ExperimentResult, ExperimentType } from "@/types/rocks
 import { v4 as uuidv4 } from "@/utils/uuid"
 import MagnifyingGlass from "./magnifying-glass"
 import RockCrossSection from "./rock-cross-section"
-import DetailedRockViewer from "./detailed-rock-viewer"
+import { Viewer } from "@/components/lab/Viewer"
 import InteractiveWorkspace from "./interactive-workspace"
 import {
   AcidBottleIcon,
@@ -161,9 +161,12 @@ export default function ExperimentStation({
             <CardDescription className="text-sm">{selectedRock.name}</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="w-full h-48 bg-muted rounded-md overflow-hidden mb-4">
-              <DetailedRockViewer rock={selectedRock} showControls={false} showInfo={false} height="192px" />
-            </div>
+           <div className="w-full h-48 rounded-md overflow-hidden mb-4">
+  <Viewer 
+    modelPath={selectedRock.model3D} 
+    className="w-full h-full"
+  />
+</div>
             <p className="text-sm">{selectedRock.description}</p>
           </CardContent>
         </Card>

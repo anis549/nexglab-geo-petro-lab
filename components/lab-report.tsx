@@ -105,7 +105,7 @@ export default function LabReport({ experimentResults, selectedRock }: LabReport
 
   return (
     <div className="space-y-4">
-      <Card className="border-orange-300">
+      <Card className="border-orange-300 border rounded-4xl bg-slate-800 text-white font-extrabold">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Rapport de Laboratoire</CardTitle>
           <div className="flex space-x-2">
@@ -139,7 +139,7 @@ export default function LabReport({ experimentResults, selectedRock }: LabReport
             {/* Informations de l'étudiant */}
             <div className="grid grid-cols-3 gap-4 mb-4">
               <div>
-                <label className="text-sm">Nom</label>
+                <label className="text-md text-[#4a6fa5]">Nom</label>
                 <Input
                   value={studentName}
                   onChange={(e) => setStudentName(e.target.value)}
@@ -147,7 +147,7 @@ export default function LabReport({ experimentResults, selectedRock }: LabReport
                 />
               </div>
               <div>
-                <label className="text-sm">Prénom</label>
+                <label className="text-md text-[#4a6fa5]">Prénom</label>
                 <Input
                   value={studentFirstName}
                   onChange={(e) => setStudentFirstName(e.target.value)}
@@ -155,7 +155,7 @@ export default function LabReport({ experimentResults, selectedRock }: LabReport
                 />
               </div>
               <div>
-                <label className="text-sm">Groupe</label>
+                <label className="text-md text-[#4a6fa5]">Groupe</label>
                 <Input
                   value={studentGroup}
                   onChange={(e) => setStudentGroup(e.target.value)}
@@ -171,8 +171,8 @@ export default function LabReport({ experimentResults, selectedRock }: LabReport
 
             {/* Fiche 1 */}
             <div className="mb-6">
-              <p className="font-bold mb-2">Fiche 1 :</p>
-              <p className="mb-4 text-sm">
+              <p className="mb-4 text-lg text-[#4a6fa5] ">Fiche 1 :</p>
+              <p className="mb-4 text-lg text-[#4a6fa5] font-semibold">
                 On vous donne dans plusieurs cassettes différents sols (ou roches déconsolidées) dont les tailles des
                 grains sont différentes. Nommez-les en donnant la classe à laquelle ils appartiennent chacun d'eux en
                 vous aidant de l'échelle granulaire donnée ci-dessous.
@@ -231,7 +231,7 @@ export default function LabReport({ experimentResults, selectedRock }: LabReport
                         Sol organique
                       </th>
                     </tr>
-                    <tr>
+                    <tr >
                       <th className="border border-gray-400 text-center"></th>
                       <th className="border border-gray-400 text-center"></th>
                       <th className="border border-gray-400 text-center text-xs">coarse</th>
@@ -348,19 +348,19 @@ export default function LabReport({ experimentResults, selectedRock }: LabReport
               <table className="w-full border-collapse mb-4">
                 <thead>
                   <tr>
-                    <th className="border border-gray-400 bg-gray-100 text-center text-sm p-1">Élément de réponse</th>
-                    <th className="border border-gray-400 bg-gray-100 text-center text-sm p-1">cassette 1</th>
-                    <th className="border border-gray-400 bg-gray-100 text-center text-sm p-1">cassette 2</th>
-                    <th className="border border-gray-400 bg-gray-100 text-center text-sm p-1">cassette 3</th>
-                    <th className="border border-gray-400 bg-gray-100 text-center text-sm p-1">cassette 4</th>
-                    <th className="border border-gray-400 bg-gray-100 text-center text-sm p-1">
+                    <th className="border border-gray-400 bg-gray-200 text-center">Élément de réponse</th>
+                    <th className="border border-gray-400 bg-gray-200 text-center">cassette 1</th>
+                    <th className="border border-gray-400 bg-gray-200 text-center">cassette 2</th>
+                    <th className="border border-gray-400 bg-gray-200 text-center">cassette 3</th>
+                    <th className="border border-gray-400 bg-gray-200 text-center">cassette 4</th>
+                    <th className="border border-gray-400 bg-gray-200 text-center">
                       Observation (couleur, nature composants, forme...)
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td className="border border-gray-400 text-center text-sm p-1">Type du matériau</td>
+                    <td className="border border-gray-400 text-center text-md">Type du matériau</td>
                     <td className="border border-gray-400 p-1">
                       <Input
                         value={cassette1.typeMateriau}
@@ -398,7 +398,7 @@ export default function LabReport({ experimentResults, selectedRock }: LabReport
                     </td>
                   </tr>
                   <tr>
-                    <td className="border border-gray-400 text-center text-sm p-1">
+                    <td className="border border-gray-400 text-center text-md">
                       Texture (dimension approximative)
                     </td>
                     <td className="border border-gray-400 p-1">
@@ -431,7 +431,7 @@ export default function LabReport({ experimentResults, selectedRock }: LabReport
                     </td>
                   </tr>
                   <tr>
-                    <td className="border border-gray-400 text-center text-sm p-1">Classe</td>
+                    <td className="border border-gray-400 text-center text-md">Classe</td>
                     <td className="border border-gray-400 p-1">
                       <Input
                         value={cassette1.classe}
@@ -478,7 +478,7 @@ export default function LabReport({ experimentResults, selectedRock }: LabReport
             {/* Fiche 2 */}
             <div className="mb-6">
               <p className="font-bold mb-2">Fiche 2 :</p>
-              <p className="mb-4 text-sm">
+              <p className="mb-4 text-lg text-[#4a6fa5] font-semibold">
                 On vous demande de faire la reconnaissance des quelques roches sédimentaires en vous aidant du diagramme
                 et du tableau des roches sédimentaires fournis en séance du TP.
               </p>
@@ -487,18 +487,18 @@ export default function LabReport({ experimentResults, selectedRock }: LabReport
               <table className="w-full border-collapse mb-4">
                 <thead>
                   <tr>
-                    <th className="border border-gray-400 bg-gray-100 text-center text-sm p-1">
+                    <th className="border border-gray-400 bg-gray-200 text-center">
                       critères de reconnaissance
                     </th>
-                    <th className="border border-gray-400 bg-gray-100 text-center text-sm p-1">Roche 1</th>
-                    <th className="border border-gray-400 bg-gray-100 text-center text-sm p-1">Roche 2</th>
-                    <th className="border border-gray-400 bg-gray-100 text-center text-sm p-1">Roche 3</th>
-                    <th className="border border-gray-400 bg-gray-100 text-center text-sm p-1">observations</th>
+                    <th className="border border-gray-400 bg-gray-200 text-center">Roche 1</th>
+                    <th className="border border-gray-400 bg-gray-200 text-center">Roche 2</th>
+                    <th className="border border-gray-400 bg-gray-200 text-center">Roche 3</th>
+                    <th className="border border-gray-400 bg-gray-200 text-center">observations</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td className="border border-gray-400 text-sm p-1">Texture (lisse ou rugueuse ?)</td>
+                    <td className="border border-gray-400 text-center text-md">Texture (lisse ou rugueuse ?)</td>
                     <td className="border border-gray-400 p-1">
                       <Input
                         value={roche1.texture}
@@ -529,7 +529,7 @@ export default function LabReport({ experimentResults, selectedRock }: LabReport
                     </td>
                   </tr>
                   <tr>
-                    <td className="border border-gray-400 text-sm p-1">Réagit à l'acide?</td>
+                    <td className="border border-gray-400 text-center text-md">Réagit à l'acide?</td>
                     <td className="border border-gray-400 p-1">
                       <Input
                         value={roche1.reactionAcide}
@@ -553,7 +553,7 @@ export default function LabReport({ experimentResults, selectedRock }: LabReport
                     </td>
                   </tr>
                   <tr>
-                    <td className="border border-gray-400 text-sm p-1">
+                    <td className="border border-gray-400 text-center text-md">
                       Taille des éléments:
                       <br />
                       &gt; ou &lt;2mm?
@@ -574,7 +574,7 @@ export default function LabReport({ experimentResults, selectedRock }: LabReport
                     </td>
                   </tr>
                   <tr>
-                    <td className="border border-gray-400 text-sm p-1">contient des fossiles</td>
+                    <td className="border border-gray-400 text-center text-md">contient des fossiles</td>
                     <td className="border border-gray-400 p-1">
                       <Input
                         value={roche1.fossiles}
@@ -598,7 +598,7 @@ export default function LabReport({ experimentResults, selectedRock }: LabReport
                     </td>
                   </tr>
                   <tr>
-                    <td className="border border-gray-400 text-sm p-1">Dureté</td>
+                    <td className="border border-gray-400 text-center text-md">Dureté</td>
                     <td className="border border-gray-400 p-1">
                       <Input
                         value={roche1.durete}
@@ -606,7 +606,7 @@ export default function LabReport({ experimentResults, selectedRock }: LabReport
                         className="border-none h-8 p-1"
                       />
                     </td>
-                    <td className="border border-gray-400 p-1">
+                    <td className="border border-gray-400 p-1" color=" rgba(0, 6, 73, 0.8)">
                       <Input
                         value={roche2.durete}
                         onChange={(e) => setRoche2({ ...roche2, durete: e.target.value })}
@@ -622,7 +622,7 @@ export default function LabReport({ experimentResults, selectedRock }: LabReport
                     </td>
                   </tr>
                   <tr>
-                    <td className="border border-gray-400 text-sm p-1">Cassure</td>
+                    <td className="border border-gray-400 text-center text-md">Cassure</td>
                     <td className="border border-gray-400 p-1">
                       <Input
                         value={roche1.cassure}
