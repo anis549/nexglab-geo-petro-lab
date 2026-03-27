@@ -21,6 +21,19 @@ import {
   StratificationIcon,
 } from "./geology-icons"
 
+// Source of truth for experiments (static, trusted lookup)
+const ROCK_DATA = [
+  { type: "sandstone", granulometry: "sand", acidReaction: "Aucune réaction", hardness: 7, texture: "Rugueuse", fossils: "Absents" },
+  { type: "limestone", granulometry: "sand", acidReaction: "Forte effervescence", hardness: 3, texture: "Rugueuse", fossils: "Présents" },
+  { type: "clay", granulometry: "clay", acidReaction: "Aucune réaction", hardness: 2, texture: "Lisse", fossils: "Absents" },
+  { type: "conglomerate", granulometry: "pebble", acidReaction: "Aucune réaction", hardness: 6, texture: "Rugueuse", fossils: "Absents" },
+  { type: "breccia", granulometry: "gravel", acidReaction: "Aucune réaction", hardness: 6, texture: "Rugueuse", fossils: "Absents" },
+  { type: "dolomite", granulometry: "sand", acidReaction: "Faible effervescence", hardness: 4, texture: "Rugueuse", fossils: "Absents" },
+  { type: "chalk", granulometry: "clay", acidReaction: "Forte effervescence", hardness: 1, texture: "Lisse", fossils: "Présents" },
+  { type: "silt", granulometry: "silt", acidReaction: "Aucune réaction", hardness: 3, texture: "Lisse", fossils: "Absents" },
+]
+
+
 interface ExperimentStationProps {
   selectedRock: RockSample | null
   onExperimentComplete: (result: ExperimentResult) => void
@@ -51,61 +64,70 @@ export default function ExperimentStation({
     )
   }
 
-  const runExperiment = (type: ExperimentType) => {
-    setActiveExperiment(type)
-    setExperimentInProgress(true)
-    setExperimentResult(null)
+ // Source of truth
+const ROCK_DATA = [
+  { type: "sandstone", granulometry: "sand", acidReaction: "Aucune réaction", hardness: 7, texture: "Rugueuse", fossils: "Absents" },
+  { type: "limestone", granulometry: "sand", acidReaction: "Forte effervescence", hardness: 3, texture: "Rugueuse", fossils: "Présents" },
+  { type: "clay", granulometry: "clay", acidReaction: "Aucune réaction", hardness: 2, texture: "Lisse", fossils: "Absents" },
+  { type: "conglomerate", granulometry: "pebble", acidReaction: "Aucune réaction", hardness: 6, texture: "Rugueuse", fossils: "Absents" },
+  { type: "breccia", granulometry: "gravel", acidReaction: "Aucune réaction", hardness: 6, texture: "Rugueuse", fossils: "Absents" },
+  { type: "dolomite", granulometry: "sand", acidReaction: "Faible effervescence", hardness: 4, texture: "Rugueuse", fossils: "Absents" },
+  { type: "chalk", granulometry: "clay", acidReaction: "Forte effervescence", hardness: 1, texture: "Lisse", fossils: "Présents" },
+  { type: "silt", granulometry: "silt", acidReaction: "Aucune réaction", hardness: 3, texture: "Lisse", fossils: "Absents" }
+]
 
-    // Simuler l'expérience en cours
-    setTimeout(() => {
-      setExperimentInProgress(false)
+const runExperiment = (type: ExperimentType) => {
+  setActiveExperiment(type)
+  setExperimentInProgress(true)
+  setExperimentResult(null)
 
-      let result = ""
-      let details: Record<string, any> = {}
+  setTimeout(() => {
+    setExperimentInProgress(false)
 
-      switch (type) {
-        case "granulometry":
-          result = `Taille des grains: ${selectedRock.grainSize}`
-          details = { grainSize: selectedRock.grainSize }
-          break
-        case "acid":
-          result = `Réaction à l'acide: ${
-            selectedRock.acidReaction === "strong"
-              ? "Forte effervescence"
-              : selectedRock.acidReaction === "weak"
-                ? "Faible effervescence"
-                : "Aucune réaction"
-          }`
-          details = { acidReaction: selectedRock.acidReaction }
-          break
-        case "hardness":
-          result = `Dureté: ${selectedRock.hardness} sur l'échelle de Mohs`
-          details = { hardness: selectedRock.hardness }
-          break
-        case "texture":
-          result = `Texture: ${selectedRock.texture === "rough" ? "Rugueuse" : "Lisse"}`
-          details = { texture: selectedRock.texture }
-          break
-        case "fossil":
-          result = selectedRock.hasFossils
-            ? "Des fossiles ont été détectés dans cet échantillon."
-            : "Aucun fossile n'a été détecté dans cet échantillon."
-          details = { hasFossils: selectedRock.hasFossils }
-          break
-      }
+   const rock = ROCK_DATA.find(
+  (r) =>
+    selectedRock.type.toLowerCase().includes(r.type.toLowerCase()) ||
+    r.type.toLowerCase().includes(selectedRock.type.toLowerCase())
+)
+    if (!rock) { setExperimentResult("Inconnu"); return }
 
-      setExperimentResult(result)
+    let result = ""
+    let details: Record<string, any> = {}
 
-      onExperimentComplete({
-        id: uuidv4(),
-        rockId: selectedRock.id,
-        experimentType: type,
-        timestamp: Date.now(),
-        result,
-        details,
-      })
-    }, 2000)
-  }
+    switch (type) {
+      case "granulometry":
+        result = rock.granulometry
+        details = { granulometry: rock.granulometry }
+        break
+      case "acid":
+        result = rock.acidReaction
+        details = { acidReaction: rock.acidReaction }
+        break
+      case "hardness":
+        result = String(rock.hardness)
+        details = { hardness: rock.hardness }
+        break
+      case "texture":
+        result = rock.texture
+        details = { texture: rock.texture }
+        break
+      case "fossil":
+        result = rock.fossils
+        details = { fossils: rock.fossils }
+        break
+    }
+
+    setExperimentResult(result)
+    onExperimentComplete({
+      id: uuidv4(),
+      rockId: selectedRock.id,
+      experimentType: type,
+      timestamp: Date.now(),
+      result,
+      details,
+    })
+  }, 2000)
+}
 
   // Simuler une réaction à l'acide avec animation
   const AcidReactionAnimation = () => {

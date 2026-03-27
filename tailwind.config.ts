@@ -50,9 +50,7 @@ const config = {
           DEFAULT: "#ffffff", // Clean white cards
           foreground: "#1a1a1a",
         },
-        highlight: "#f4c24b", // Warm highlight color
-        },
-        highlight: "#f4c24b", // Warm highlight yellow
+        highlight: "#f4c24b",
       },
       borderRadius: {
         lg: "var(--radius)",

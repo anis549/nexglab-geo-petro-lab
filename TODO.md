@@ -1,11 +1,13 @@
-# Experiments Lab Refactor TODO
+# 3D Performance Optimization Plan
 
-## Plan Steps:
-- [x] Step 1: Update Viewer.tsx ✅
-- [x] Step 2: Workspace.tsx full 3-col + experiments buttons/results ✅
-- [ ] Step 3: Enhance analysis/microscope modes with real experiments UI.
-- [ ] Step 4: Test responsiveness, model loading, mode switches.
-- [ ] Step 5: attempt_completion.
+## Step 1: [COMPLETE] Analyze project structure & 3D hotspots ✓
 
-Current: Step 3 - Add experiment logic/modes. Layout complete ✅
+## Step 2: [COMPLETE] Preload GLTF models - lib/three-preload.ts + layout import ✓
+## Step 3: [COMPLETE] Dynamic Viewer (ssr: false) - OptimizedViewer.tsx + Workspace.tsx update ✓
+
+## Step 4: [COMPLETE] Canvas optimizations ✓ DPR=[1,1.5], conditional antialias, powerPreference='high-performance'
+
+## Step 5: [PENDING] Memoization & re-render prevention
+## Step 6: [PENDING] Suspense + loading states
+## Step 7: [PENDING] Final test
 

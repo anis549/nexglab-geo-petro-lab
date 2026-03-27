@@ -107,9 +107,11 @@ export const Viewer = memo(function Viewer({ modelPath, className }: ViewerProps
         key={modelPath}
         camera={{ position: [0, 0, 4], fov: 45 }}
         gl={{
-          antialias: true,
+          antialias: window.devicePixelRatio > 1,
           outputColorSpace: THREE.SRGBColorSpace,
+          powerPreference: 'high-performance',
         }}
+        dpr={[1, 1.5]}
         style={{ background: "transparent" }}
       >
         <ambientLight intensity={0.6} />

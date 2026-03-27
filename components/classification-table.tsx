@@ -1,11 +1,12 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
 import { Search } from "lucide-react"
 import type { RockSample, ExperimentResult } from "@/types/rocks"
+import { getSafeRockData, formatRockDataForDisplay } from "@/utils/safe-rock-data"
 
 interface ClassificationTableProps {
   rockSamples: RockSample[]
@@ -15,19 +16,36 @@ interface ClassificationTableProps {
 export default function ClassificationTable({ rockSamples, experimentResults }: ClassificationTableProps) {
   const [searchTerm, setSearchTerm] = useState("")
 
-  const filteredRocks = rockSamples.filter(
-    (rock) =>
-      rock.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      rock.type.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+  const filteredRocks = useMemo(() => 
+    rockSamples.filter(
+      (rock) =>
+        rock.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        rock.type.toLowerCase().includes(searchTerm.toLowerCase()),
+    ),
+  [rockSamples, searchTerm])
 
-  // Get the latest experiment results for each rock
-  const getLatestResult = (rockId: string, type: string) => {
-    const results = experimentResults
-      .filter((result) => result.rockId === rockId && result.experimentType === type)
-      .sort((a, b) => b.timestamp - a.timestamp)
+  // ─────────────────────────────────────────────────────────────
+  // PERFORMANCE: Cache safe data per rock row (computed once)
+  // This ensures we call getSafeRockData() ONCE per rock, not multiple times
+  // ─────────────────────────────────────────────────────────────
+  const rowDataCache = useMemo(() => {
+    const cache: Record<string, Record<string, string>> = {}
+    
+    filteredRocks.forEach((rock) => {
+      // SINGLE call to getSafeRockData per rock
+      const safeData = getSafeRockData(rock, experimentResults)
+      // Format for display (adds "(Mohs)" label to hardness, etc)
+      cache[rock.id] = formatRockDataForDisplay(safeData)
+    })
+    
+    return cache
+  }, [filteredRocks, experimentResults])
 
-    return results.length > 0 ? results[0].result : "-"
+  // ─────────────────────────────────────────────────────────────
+  // DISPLAY: Get cached value for cell (already formatted and safe)
+  // ─────────────────────────────────────────────────────────────
+  function getCellValue(rockId: string, fieldName: string): string {
+    return rowDataCache[rockId]?.[fieldName] ?? "—"
   }
 
   return (
@@ -66,37 +84,19 @@ export default function ClassificationTable({ rockSamples, experimentResults }: 
                   <TableCell className="font-medium text-xs sm:text-sm">{rock.name}</TableCell>
                   <TableCell className="text-xs sm:text-sm">{rock.type}</TableCell>
                   <TableCell className="text-xs sm:text-sm hidden sm:table-cell">
-                    {getLatestResult(rock.id, "granulometry") !== "-"
-                      ? getLatestResult(rock.id, "granulometry")
-                      : rock.grainSize}
+                    {getCellValue(rock.id, "granulometry")}
                   </TableCell>
                   <TableCell className="text-xs sm:text-sm hidden md:table-cell">
-                    {getLatestResult(rock.id, "acid") !== "-"
-                      ? getLatestResult(rock.id, "acid")
-                      : rock.acidReaction === "strong"
-                        ? "Forte effervescence"
-                        : rock.acidReaction === "weak"
-                          ? "Faible effervescence"
-                          : "Aucune réaction"}
+                    {getCellValue(rock.id, "acid")}
                   </TableCell>
                   <TableCell className="text-xs sm:text-sm hidden lg:table-cell">
-                    {getLatestResult(rock.id, "hardness") !== "-"
-                      ? getLatestResult(rock.id, "hardness")
-                      : `${rock.hardness} (Mohs)`}
+                    {getCellValue(rock.id, "hardness")}
                   </TableCell>
                   <TableCell className="text-xs sm:text-sm hidden xl:table-cell">
-                    {getLatestResult(rock.id, "texture") !== "-"
-                      ? getLatestResult(rock.id, "texture")
-                      : rock.texture === "rough"
-                        ? "Rugueuse"
-                        : "Lisse"}
+                    {getCellValue(rock.id, "texture")}
                   </TableCell>
                   <TableCell className="text-xs sm:text-sm hidden xl:table-cell">
-                    {getLatestResult(rock.id, "fossil") !== "-"
-                      ? getLatestResult(rock.id, "fossil")
-                      : rock.hasFossils
-                        ? "Présents"
-                        : "Absents"}
+                    {getCellValue(rock.id, "fossil")}
                   </TableCell>
                 </TableRow>
               ))}

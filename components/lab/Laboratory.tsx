@@ -191,6 +191,7 @@ export default function Laboratory() {
               { value: "classification", icon: "📊", label: "Classification" },
             ].map(({ value, icon, label }) => (
               <TabsTrigger
+        
                 key={value}
                 value={value}
                 className="rounded-xl text-sm font-semibold transition-all duration-300 data-[state=active]:text-white data-[state=inactive]:text-white/40 data-[state=inactive]:hover:text-white/70"
@@ -240,7 +241,7 @@ export default function Laboratory() {
           </TabsContent>
 
           <TabsContent value="notebook" className="mt-4 flex-1 min-h-0">
-            <LabNotebook experimentResults={experimentResults} selectedRock={selectedRock} />
+            <LabNotebook experimentResults={experimentResults} selectedRock={selectedRock} rockSamples={rockSamples} />
           </TabsContent>
 
           <TabsContent value="classification" className="mt-4 flex-1 min-h-0">

@@ -95,7 +95,7 @@ export const Workspace = memo(function Workspace({ selectedRock }: WorkspaceProp
             />
           ))}
 
-          <Viewer modelPath={selectedRock.model3D} className="w-full h-full" />
+        <Viewer modelPath={selectedRock.model3D} className="w-full h-full" />
         </div>
       </div>
 
